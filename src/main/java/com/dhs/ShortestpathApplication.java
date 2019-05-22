@@ -8,11 +8,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class ShortestpathApplication extends SpringBootServletInitializer {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(ShortestpathApplication.class);
-	}
-	
 	public static void main(String[] args) {
 		SpringApplication.run(ShortestpathApplication.class, args);
 	}
