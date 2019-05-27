@@ -7,8 +7,12 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
 	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
 	crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
 <script src="http://getspringy.com/springy.js"></script>
 <script src="http://getspringy.com/springyui.js"></script>
 <style type="text/css">
@@ -43,11 +47,11 @@ hr {
 </style>
 </head>
 <body>
-<script th:inline="javascript">
+	<script th:inline="javascript">
     var planetList = /*[[${listofPlanets}]]*/;
     var routeList = /*[[${routeList}]]*/;
 </script>
-<script>
+	<script>
 var graph = new Springy.Graph();
 var graphNodes = [];
 var selectString = "";
@@ -56,7 +60,6 @@ for(var i=0;i<planetList.length;i++){
 	graphNodes[planetList[i].planetNode]=graph.newNode({label:nodeLable});
 	selectString+="<option value="+nodeLable+">"+nodeLable+"</option>";
 }
-console.log(selectString);
 for(var i=0;i<routeList.length;i++){
 	var sourceNode = routeList[i].planetOrigin;//graphNodes[routeList[i].planetOrigin];
 	var destinationNode = routeList[i].planetDestination;//graphNodes[routeList[i].planetDestination];
@@ -74,38 +77,60 @@ jQuery(function(){
 });
 
 function getShortestPath(){
+	try{
 	$.ajax({
 		  type: "GET",
 		  url:"ShortestPath/"+$('#sourcePlanet').val()+"/"+$('#destinationPlanet').val(),
 		  data:"",
-		  success:function(){
-			  
+		  contentType: "application/json",
+		  success:function(response){
+			  $("#route-list").html(response);
 		  },
 		  dataType:"text"
 	});
+	}catch(e){
+		console.log(e);
+	}
 }
 
 $( document ).ready(function() {
 	$('.listPlanet').html(selectString);
 });
 </script>
-<div class="container">
-	<h1>Welcome to World!!!</h1>
-<table class="table table-striped">
-<tr><td>
-<canvas id="springydemo" width="640" height="480" />
-</td>
-<td width="50%" valign="top">
-	<table widht="100%">
-	<tr><td colspan="3">Find The Shortest Path</td></tr>
-	<tr><td>Source Planet</td><td>Destination Planet</td><td></td></tr>
-	<tr><td><select class="listPlanet form-control" id="sourcePlanet"><option></option></select></td>
-	<td><select class="listPlanet form-control" id="destinationPlanet"><option></option></select></td><td><button type="button" class="btn btn-primary" onclick="javascript:getShortestPath();">Find</button></td></tr>
-	</table>
-</td>
-</tr>
-</table>
-</div>
+	<div class="container">
+		<h1>Welcome to World!!!<button class="btn btn-primary btn-sm active float-right" onclick="javascript:window.history.back()">Back</button></h1>
+		<table class="table table-striped">
+			<tr>
+				<td width="40%">
+					<canvas id="springydemo" width="600" height="440" />
+				</td>
+				<td width="60%" valign="top">
+					<table width="100%">
+						<tr>
+							<td colspan="5">Find The Shortest Path</td>
+						</tr>
+						<tr>
+							<td>Source Planet</td>
+							<td>Destination Planet</td>
+							<td colspan="3"></td>
+						</tr>
+						<tr>
+							<td><select class="listPlanet form-control"
+								id="sourcePlanet"><option></option></select></td>
+							<td><select class="listPlanet form-control"
+								id="destinationPlanet"><option></option></select></td>
+							<td><button type="button" class="btn btn-primary"
+									onclick="javascript:getShortestPath();">Find</button></td>
+							<td></td>
+							<td></td>		
+						</tr>
+					</table>
+					<div id="route-list"></div>		
+				</td>
+			</tr>
+			
+		</table>
+	</div>
 
 </body>
 

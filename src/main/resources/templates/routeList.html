@@ -1,0 +1,11 @@
+<table width="100%" th:fragment="routeResponse">
+	<tr>
+		<td colspan="4">Shortest Path Between <span th:text="${routeResponse.planetOrigin}"></span> & <span th:text="${routeResponse.planetDestination}"></span> is <span th:text="${routeResponse.distance}"></span></td>
+	</tr>
+	<tr><td>Source Planet</td><td>Destination Planet</td><td>Distance</td><td>Traffic</td></tr>
+	<tr th:if="${routeResponse.listRoutes.size() == 0}"><td colspan=4>No Route</td></tr>
+	<tr th:each="route:${routeResponse.listRoutes}">
+		<td th:text="${route.planetOrigin}" align="center"></td><td th:text="${route.planetDestination}" align="center"></td>
+		<td th:text="${route.distance}" align="right"></td><td th:text="${route.trafficDelay}" align="right"></td>
+	</tr>
+</table>

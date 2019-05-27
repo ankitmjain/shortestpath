@@ -1,32 +1,24 @@
 package com.dhs.service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.math3.geometry.spherical.twod.Vertex;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import com.dhs.entity.Planet;
 import com.dhs.entity.Route;
-import com.dhs.utility.Dijkstras_Shortest_Path;
 
 @Service
 public class LoadPlanetsData {
@@ -76,10 +68,7 @@ public class LoadPlanetsData {
 			}
 			System.out.println(routeList);
 			planetService.saveRoutes(routeList);
-			
-			Dijkstras_Shortest_Path dsp = new Dijkstras_Shortest_Path();
-			Dijkstras_Shortest_Path.vertexEdgeCreation(routeList);
-			
+						
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

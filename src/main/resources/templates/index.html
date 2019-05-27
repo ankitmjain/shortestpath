@@ -44,14 +44,19 @@ hr {
 	<div class="container">
 		<h1>Welcome to World!!!</h1>
 		<h3>Planets</h3>
-		<p>
-			List of Planets & Routes and Traffic Delays
-			<button>Add Planet</button>
-		</p>
+		<table width="100%">
+			<tr><td>
+				List of Planets & Routes and Traffic Delays
+			</td>
+			<td align="right"><button class="btn btn-primary btn-sm active" data-toggle="modal" data-target="#exampleModal">Add Planet</button></td>
+			<td align="right"><a th:href="@{/ShowPlanetGraph}" href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Find Shortest Path</a></td></tr>
+			
+			
+			
+		</table>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">#</th>
 					<th scope="col">Planet Code</th>
 					<th scope="col">Planet Name</th>
 					<th scope="col">Route To Other Planets</th>
@@ -60,17 +65,56 @@ hr {
 				</tr>
 			</thead>
 			<tbody>
+				<h3 th:text="'Route List From '+${planetCode}"></h3>
+			
 				<tr th:each="planet: ${listofPlanets}">
-					<th scope="row">1</th>
 					<td th:text="${planet.planetNode}">Mark</td>
 					<td th:text="${planet.planetName}">Otto</td>
 					<td><a th:href="@{/Planet/{planetid}/Route(planetid=${planet.planetNode})}">Route</a></td>
-					<td>Edit</td>
-					<td>Delete</td>
+					<td><a th:href="@{/Planet/{planetid}/Edit(planetid=${planet.planetNode})}" data-toggle="modal" data-target="#exampleModal">Edit</a></td>
+					<td><a th:href="'javascript:openDelete(\'Planet/'+${planet.planetID}+'/Delete\')'">Delete</a></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
 </body>
-
+<script>
+function openDelete(url){
+	try{
+		$.ajax({
+			  type: "DELETE",
+			  url:url,
+			  data:"",
+			  contentType: "application/json",
+			  success:function(response){
+				 alert(response); 
+			  },
+			  dataType:"text"
+		});
+		}catch(e){
+			console.log(e);
+		}
+}
+</script>
 </html>

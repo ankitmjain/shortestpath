@@ -42,16 +42,15 @@ hr {
 </head>
 <body>
 	<div class="container">
-		<h1>Welcome to World!!!</h1>
+		<h1>Welcome to World!!!<button class="btn btn-primary btn-sm active float-right" onclick="javascript:window.history.back()">Back</button></h1>
 		<h3 th:text="'Route List From '+${planetCode}"></h3>
 		<p>
 			Distance and Traffic Delays
-			<button>Add Route</button>
+			<button class="btn btn-primary btn-sm active float-right">Add Route</button>
 		</p>
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th scope="col">#</th>
 			<th scope="col">Planet Destination</th>
 			<th scope="col">Distance</th>
 			<th scope="col">Traffic Delay</th>
@@ -61,12 +60,11 @@ hr {
 	</thead>
 	<tbody>
 		<tr th:each="route: ${routeList}">
-			<td scope="row">1</td>
 			<td th:text="${route.planetDestination}">Mark</td>
 			<td th:text="${route.distance}">Otto</td>
 			<td th:text="${route.trafficDelay}">Otto</td>
-			<td>Edit</td>
-			<td>Delete</td>
+			<td><a th:href="@{/Route/{routeid}/Edit(routeid=${route.routeID})}">Edit</td>
+			<td><a th:href="@{/Route/{routeid}/Delete(routeid=${route.routeID})}">Delete</td>
 		</tr>
 	</tbody>
 </table>

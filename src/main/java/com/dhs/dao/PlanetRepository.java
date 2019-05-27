@@ -8,6 +8,7 @@ import com.dhs.entity.Planet;
 
 public interface PlanetRepository extends CrudRepository<Planet,Long> {
 
+	Planet findByPlanetID(Long planetID);
 	Planet findByPlanetName(String planetName);
 	List<Planet> findByPlanetNode(String planetNode);
 }

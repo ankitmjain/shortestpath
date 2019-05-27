@@ -3,6 +3,8 @@ package com.dhs.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,32 +25,44 @@ public class PlanetController {
 	PlanetService planetService;
 	
 	@PostMapping(value="/Planet/Save",consumes="application/json")
-	public String savePlanets(@RequestBody List<Planet> planets) {
-		return planetService.savePlanets(planets);
+	public ResponseEntity savePlanets(@RequestBody List<Planet> planets) {
+		return ResponseEntity.ok(planetService.savePlanets(planets));
 	}
 	
 	@PostMapping(value="/Route/Save",consumes="application/json")
-	public String saveRoutes(@RequestBody List<Route> routes) {
-		return planetService.saveRoutes(routes);
+	public ResponseEntity saveRoutes(@RequestBody List<Route> routes) {
+		return ResponseEntity.ok(planetService.saveRoutes(routes));
 	}
 	
 	@GetMapping(value = "/Planet/List", produces = "application/json")
-	public Iterable<Planet> listPlanets(){
-		return planetService.getPlanetList();
+	public ResponseEntity<Iterable<Planet>> listPlanets(){
+		return ResponseEntity.ok(planetService.getPlanetList());
 	}
 	
 	@GetMapping(value = "/Route/List", produces = "application/json")
-	public Iterable<Route> listRoutes(){
-		return planetService.getRouteList();
+	public ResponseEntity<Iterable<Route>> listRoutes(){
+		return ResponseEntity.ok(planetService.getRouteList());
 	}
 	
 	@GetMapping(value = "/Planet/{planetCode}/Route", produces = "application/json")
-	public Iterable<Route> listRouteBaseonPlanet(@PathVariable String planetCode){
-		return planetService.getPlanetRouteList(planetCode);
+	public ResponseEntity<Iterable<Route>> listRouteBaseonPlanet(@PathVariable String planetCode){
+		return ResponseEntity.ok(planetService.getPlanetRouteList(planetCode));
 	}
+	
+	@DeleteMapping("/Planet/{planetCode}/Delete")
+    public ResponseEntity deletePlanet(@PathVariable Long planetCode){
+		if (planetService.findById(planetCode)==null) {
+            ResponseEntity.badRequest().build();
+        }
+		planetService.deletePlanet(planetCode);
+
+        return ResponseEntity.ok().build();
+		
+	}
+	
 	@GetMapping(value = "/ShortestPath/{planetSource}/{planetDestination}", produces = "application/json")
-	public RouteResponse getShortestPath(@PathVariable String planetSource,@PathVariable String planetDestination){
-		return planetService.getShortestPath(planetSource,planetDestination);
+	public ResponseEntity<RouteResponse> getShortestPath(@PathVariable String planetSource,@PathVariable String planetDestination){
+		return ResponseEntity.ok(planetService.getShortestPath(planetSource,planetDestination));
 	}
 	
 	

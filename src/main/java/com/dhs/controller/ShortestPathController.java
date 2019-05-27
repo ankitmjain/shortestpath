@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,12 +51,18 @@ public class ShortestPathController {
         return "route.html";
 	}
 	
+	@DeleteMapping("/Planet/{planetCode}/Delete")
+    public String deletePlanet(Model model,@PathVariable String planetCode) throws JsonParseException, JsonMappingException, IOException{
+		ResponseEntity<String> response = restCall.getEndPointResponse("Planet/"+planetCode+"/Delete",HttpMethod.DELETE,null);
+		return "redirect:/home";
+	}
+	
 	@GetMapping("/ShortestPath/{planetSource}/{planetDestination}")
     public String findShortestPath(Model model,@PathVariable String planetSource,@PathVariable String planetDestination) throws JsonParseException, JsonMappingException, IOException{
 		ResponseEntity<String> response = restCall.getEndPointResponse("ShortestPath/"+planetSource+"/"+planetDestination,HttpMethod.GET,null);
 		RouteResponse routeResponse = objectMapper.readValue(response.getBody(),new TypeReference<RouteResponse>(){});
 		model.addAttribute("routeResponse",routeResponse);
-		return "planetsGraph.html";
+		return "routeList.html::routeResponse";
 	}
 	
 	@GetMapping("/ShowPlanetGraph")
